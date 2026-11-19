@@ -180,10 +180,9 @@ git add . && git commit -m "feat: scaffold from desy-angular-starter (renamed to
 - `https://desy.aragon.es/plantillas-con-sesion-iniciada.html.md` (con auth)
 - `https://desy.aragon.es/plantillas-edicion.html.md` (CRUD)
 
-**Convención de desy-angular v19:**
-- Componentes standalone por defecto (`standalone: true`)
-- Imports en cada componente (no NgModules)
-- Signals para estado local
+**Convención del starter (desy-angular 18.2.0 + Angular 20.3):**
+- Componentes con `standalone: false`, registrados en un NgModule (`src/app/app.component.ts:7` del starter; también los de la librería, p. ej. `desy-buttons/components/button/button.component.ts:7`). Mismo valor que `desy-angular-translator`
+- Arranque con `platformBrowserDynamic().bootstrapModule(AppModule)` (`src/main.ts:12`); los componentes DESY llegan por `DesyAngularModule` en los `imports` de `app.module.ts`
 - Inputs con `[input]="value"`, outputs con `(outputEvent)="handler()"`
 
 ---
