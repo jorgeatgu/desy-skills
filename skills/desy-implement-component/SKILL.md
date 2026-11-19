@@ -486,6 +486,9 @@ Aplica a cada componente que generes:
 - [ ] Click fuera del contenedor cierra el modal
 - [ ] Icono de cierre con `aria-label`
 - [ ] Variante destructiva: botón principal a la derecha, color `alert`
+- [ ] Variante destructiva: foco inicial en Cancelar (la acción segura), no en el título. Dale un `id` al botón Cancelar y pásalo como tercer argumento (`focusFirst`): `openDialog(id, focusAfterClosed, 'id-boton-cancelar')`. En desy-html, en el botón que abre el modal: `"onclick": "openDialog('modal-eliminar', this, 'boton-cancelar-eliminar')"`.
+
+> Choque con MWG `dialog`: MWG recomienda `<dialog>` nativo sin `role`/`aria-modal`. Los componentes `modal` y `dialog` de DESY son `<div>` gestionados por `dialog.js`, que exige `role="dialog"`; por eso aquí sí se pide. Propuesta SDA: `docs/propuestas-sda.md` §1.
 
 ### Imágenes
 - [ ] `alt` descriptivo (o `alt=""` si decorativa)
@@ -658,6 +661,7 @@ export class FormularioComponent {
 - ✅ Esc cierra el modal
 - ✅ Botón destructivo (`color="danger"`) a la derecha
 - ✅ Botón secundario (`fill="clear"`) a la izquierda
+- ⚠️ Foco inicial en Cancelar, no en el título: este snippet no lo fija. En desy-html se hace con el tercer argumento de `openDialog(id, focusAfterClosed, 'id-boton-cancelar')`.
 
 ## Gotchas
 
