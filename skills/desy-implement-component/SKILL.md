@@ -470,8 +470,7 @@ Aplica a cada componente que generes:
 - [ ] Si tiene hint: `<p id="hint">` + `aria-describedby` en el input
 - [ ] Si tiene error, sigue el patrón de errores:
 
-> Con error de servidor: la macro emite `aria-invalid="true"` y `aria-errormessage`; el mensaje va con la macro `errorMessage` (prefijo `<span class="sr-only">Error:</span>`); arriba del formulario, un resumen de errores con enlaces a cada campo; al recargar, foco en el resumen o en el primer campo con error. Validación en el cliente: consulta MWG `accessible-error-announcement` y `validate-input-after-interaction` (`aria-invalid="false"` hasta `:user-invalid`). No se fija `aria-invalid="true"` a mano en el marcado.
-
+  > Con error de servidor: la macro emite `aria-invalid="true"` y `aria-errormessage`; el mensaje va con la macro `errorMessage` (prefijo `<span class="sr-only">Error:</span>`); arriba del formulario, un resumen de errores con enlaces a cada campo; al recargar, foco en el resumen o en el primer campo con error. Validación en el cliente: consulta MWG `accessible-error-announcement` y `validate-input-after-interaction` (`aria-invalid="false"` hasta `:user-invalid`). No se fija `aria-invalid="true"` a mano en el marcado.
 - [ ] `<form>` con `aria-label` o `aria-labelledby`
 
 ### Tablas
@@ -489,7 +488,7 @@ Aplica a cada componente que generes:
 - [ ] Click fuera del contenedor cierra el modal
 - [ ] Icono de cierre con `aria-label`
 - [ ] Variante destructiva: botón principal a la derecha, color `alert`
-- [ ] Variante destructiva: foco inicial en Cancelar (la acción segura), no en el título. Dale un `id` al botón Cancelar y pásalo como tercer argumento (`focusFirst`): `openDialog(id, focusAfterClosed, 'id-boton-cancelar')`. En desy-html, en el botón que abre el modal: `"onclick": "openDialog('modal-eliminar', this, 'boton-cancelar-eliminar')"`.
+- [ ] Variante destructiva: foco inicial en Cancelar (la acción segura), en lugar del encabezado. Dale un `id` al botón Cancelar y pásalo como tercer argumento (`focusFirst`) de `openDialog`. En desy-html, en el botón que abre el modal: `"onclick": "openDialog('modal-eliminar', this, 'boton-cancelar-eliminar')"`.
 
 > Choque con MWG `dialog`: MWG recomienda `<dialog>` nativo sin `role`/`aria-modal`. Los componentes `modal` y `dialog` de DESY son `<div>` gestionados por `dialog.js`, que exige `role="dialog"`; por eso aquí sí se pide. Propuesta SDA: `docs/propuestas-sda.md` §1.
 
@@ -548,7 +547,7 @@ export class FormularioComponent {
 
 **Accesibilidad verificada:**
 - ✅ Elemento `<desy-button>` renderiza `<button type="submit">`
-- ✅ Submit siempre activo: si el formulario es inválido, se deja enviar y se muestran los errores
+- ✅ Submit sin `disabled`: aunque el formulario sea inválido, se deja enviar y `onSubmit()` muestra los errores
 - ✅ `preventDoubleClick` evita doble submit
 - ✅ El texto describe la acción ("Enviar")
 - ✅ Contraste OK (variant default)
@@ -662,7 +661,7 @@ export class FormularioComponent {
 - ✅ Esc cierra el modal
 - ✅ Botón destructivo (`color="danger"`) a la derecha
 - ✅ Botón secundario (`fill="clear"`) a la izquierda
-- ⚠️ Foco inicial en Cancelar, no en el título: este snippet no lo fija. En desy-html se hace con el tercer argumento de `openDialog(id, focusAfterClosed, 'id-boton-cancelar')`.
+- ⚠️ Foco inicial en Cancelar (checklist de modales): este snippet no lo fija; hay que añadirlo antes de dar el modal por bueno.
 
 ## Gotchas
 
