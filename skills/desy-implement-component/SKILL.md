@@ -459,7 +459,7 @@ Aplica a cada componente que generes:
 - [ ] Etiqueta clara (verbo en infinitivo, 1-2 palabras, no mayúsculas)
 - [ ] Si lleva icono + texto: `aria-hidden=true` en SVG, texto describe la acción
 - [ ] Si lleva solo icono: `role=img` + `aria-label` que describe la acción
-- [ ] Si `target=_blank`: atributo `title` avisando
+- [ ] Si abre en ventana nueva (`target="_blank"`): avísalo dentro del enlace, con texto visible o con `<span class="sr-only">(se abre en ventana nueva)</span>`. No uses el atributo `title` para avisar: solo se ve al pasar el ratón y no llega por teclado (MWG `accessibility`)
 
 ### Inputs / Formularios
 - [ ] `<label>` visible y único, apunta al `id` del input
