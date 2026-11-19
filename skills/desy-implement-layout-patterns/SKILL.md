@@ -370,6 +370,7 @@ Convención oficial de DESY (ver `_pattern.cabecera-editar.njk` y `_pattern.cabe
 * `container mx-auto px-base` alinea el contenido al ancho del container de DESY.
 * Skip-link **SIEMPRE PRIMERO** dentro del header (accesibilidad WCAG 2.4.1).
 * Acciones a la derecha en desktop con `lg:ml-auto lg:pl-base`.
+* La cabecera queda fuera del `form`: sus botones llevan `type="button"`. Si uno debe enviar el formulario de la página, `type="submit"` con `form="<id-del-form>"`.
 
 ### Cards grid (misma altura)
 
@@ -504,7 +505,7 @@ La macro emite `<summary>` con un `<span class="c-link">` dentro y el marcador d
 
 {{ componentAccordion({
   "idPrefix": "faq",
-  "heading": { "text": "Preguntas frecuentes" },
+  "heading": { "text": "Preguntas frecuentes", "classes": "c-h3" },
   "headingLevel": 2,
   "allowMultiple": true,
   "items": [
@@ -519,7 +520,7 @@ La macro pinta el título en `<h2>` y cada pregunta como `<button type="button" 
 **Reglas:**
 
 * Nunca un heading dentro de `<summary>`: JAWS y TalkBack exponen `summary` como botón y descartan el heading, así que no se puede saltar de pregunta en pregunta (MWG `accordion`). Si hace falta navegar por headings, usa `componentAccordion`.
-* Varias preguntas abiertas a la vez por defecto: con `details`, no pongas el mismo `name` a todos; con `accordion`, pasa `"allowMultiple": true` (sin él, abrir una cierra las demás). Solo hazlo exclusivo si el usuario lo pide.
+* Varias preguntas abiertas a la vez por defecto: con `details` ya es así (no añadas un `name` común por `attributes`, que las haría exclusivas); con `accordion`, pasa `"allowMultiple": true` (sin él, abrir una cierra las demás). Solo hazlo exclusivo si el usuario lo pide.
 * El título del bloque es un heading visible antes de las preguntas; ajusta su nivel a la jerarquía de la página.
 
 ## Convención de bloques `<!-- blockName -->`
