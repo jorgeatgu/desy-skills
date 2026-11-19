@@ -157,7 +157,7 @@ Manual, ~15 minutos. Activa NVDA / VoiceOver / Orca y recorre la página:
 | Lectura de un input con error | "Nombre, edición, requerido, error: el campo es obligatorio" |
 | Lectura de un formulario completo | "Formulario de contacto" (por `aria-label` o `aria-labelledby`) |
 | Lectura de una tabla | "Tabla, 3 filas, 4 columnas. Encabezado: Mes, Pago 1, Pago 2" |
-| Lectura de un modal al abrirse | "Diálogo modal, ¿Eliminar expediente?, título" |
+| Lectura de un modal al abrirse | Anuncia el diálogo con su título (por `aria-labelledby`), p. ej. "¿Eliminar expediente?, diálogo"; en la variante destructiva, el foco cae en "Cancelar, botón" |
 | Lectura de un link que abre nueva ventana | Anuncia "enlace Se abre en ventana nueva" (por `title`) |
 | Navegación por landmarks (D / L en NVDA) | Recorre `<header>`, `<nav>`, `<main>`, `<footer>` |
 
@@ -328,6 +328,9 @@ Tras todos los tests, compila un reporte de accesibilidad:
 - [ ] Foco al cerrarse vuelve al elemento que lo abrió
 - [ ] Icono de cierre con `aria-label`
 - [ ] Variante destructiva: botón principal a la derecha, color `alert`
+- [ ] Variante destructiva: foco inicial en Cancelar (la acción segura), en lugar del encabezado. El botón Cancelar tiene `id` y se pasa como tercer argumento (`focusFirst`) de `openDialog`. En desy-html, en el botón que abre el modal: `"onclick": "openDialog('modal-eliminar', this, 'boton-cancelar-eliminar')"`.
+
+> Choque con MWG `dialog`: MWG recomienda `<dialog>` nativo sin `role`/`aria-modal`. Los componentes `modal` y `dialog` de DESY son `<div>` gestionados por `dialog.js`, que exige `role="dialog"`; por eso aquí sí se pide. Propuesta SDA: `docs/propuestas-sda.md` §1.
 
 ### Imágenes
 - [ ] `alt` descriptivo (o `alt=""` si decorativa)
@@ -378,7 +381,7 @@ Tras todos los tests, compila un reporte de accesibilidad:
 2. **Test de teclado** (5 min):
    - Tab → foco al botón, outline visible ✅
    - Enter → activa la acción ✅
-   - Si hay confirmación, abre modal con foco en título ✅
+   - Si hay confirmación, abre el modal con el foco en Cancelar (`focusFirst` de `openDialog`) ✅
 
 3. **Test con lector de pantalla** (5 min):
    - Botón anuncia: "Eliminar, botón" (no "icono de papelera, botón")
