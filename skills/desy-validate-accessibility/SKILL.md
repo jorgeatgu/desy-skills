@@ -22,7 +22,7 @@ Paso **5** de la secuencia de `desy-preflight-check` — después de `desy-imple
 ## Errores típicos que evita
 - ❌ **Mergear UI sin pasar axe-core**: el primer escaneo encuentra 5-15 issues triviales (labels sin `for`, contraste < 4.5:1, headings sin jerarquía).
 - ❌ **Confiar solo en automáticas**: axe-core y pa11y detectan ~30-40% de issues. El resto requiere test manual (teclado, lector de pantalla).
-- ❌ **Saltarse lector de pantalla**: `aria-invalid` faltante, `role="alert"` mal aplicado, landmarks duplicados son invisibles a axe pero críticos.
+- ❌ **Saltarse lector de pantalla**: mensaje de error no asociado al campo, `role="alert"` mal aplicado, landmarks duplicados son invisibles a axe pero críticos.
 - ❌ **No probar teclado en modales**: foco que escapa al hacer Tab, Esc que no cierra, foco que no vuelve al botón origen — pasa el scan pero rompe la experiencia.
 - ❌ **Auditar solo en desktop**: test responsive (375px, tablet) revela target size táctil, scroll horizontal, menús hamburguesa inaccesibles.
 
@@ -137,7 +137,7 @@ Manual, ~10 minutos. Recorre la página solo con teclado:
 | **Flechas en select** | Cambia la opción seleccionada |
 | **Flechas en tabs** | Cambia entre tabs (W3C APG) |
 | **Flechas en tablas** (role=grid) | Navega entre celdas |
-| **Foco al error-summary** | Al submit de formulario con errores, el foco va al título del resumen |
+| **Foco tras enviar con errores** | Al recargar la página con errores, el foco va al resumen de errores o al primer campo con error |
 
 **Si algo falla:** corregir el orden de focus, añadir skip-link, restaurar outline, etc.
 
@@ -305,8 +305,9 @@ Tras todos los tests, compila un reporte de accesibilidad:
 - [ ] `autocomplete` cuando aplique (`email`, `tel`, `postal-code`, etc.)
 - [ ] `type` correcto (`text`, `email`, `tel`, `date`, etc.)
 - [ ] Si tiene hint: `<p id="hint">` + `aria-describedby` en el input
-- [ ] Si tiene error: `<p id="error">` con `<span class="sr-only">Error:</span>` + `aria-errormessage` + `aria-invalid=true`
-- [ ] Foco al error-summary al submit con errores
+- [ ] Si tiene error, sigue el patrón de errores:
+
+  > Con error de servidor: la macro emite `aria-invalid="true"` y `aria-errormessage`; el mensaje va con la macro `errorMessage` (prefijo `<span class="sr-only">Error:</span>`); arriba del formulario, un resumen de errores con enlaces a cada campo; al recargar, foco en el resumen o en el primer campo con error. Validación en el cliente: consulta MWG `accessible-error-announcement` y `validate-input-after-interaction` (`aria-invalid="false"` hasta `:user-invalid`). No se fija `aria-invalid="true"` a mano en el marcado.
 - [ ] `<form>` con `aria-label` o `aria-labelledby`
 - [ ] Foco visible: NO `outline: none` sin alternativa
 - [ ] Border input error: 1px alert-dark
@@ -428,39 +429,34 @@ Tras todos los tests, compila un reporte de accesibilidad:
    - Issues medios: corregir antes de próxima release
    - Issues bajos: backlog
 
-### Ejemplo: Detección de issue específico (aria-invalid faltante)
+### Ejemplo: Detección de issue específico (error que el lector no anuncia)
 
-**Contexto:** el equipo hizo un formulario de login sin `aria-invalid` en los inputs con error.
+**Contexto:** el equipo hizo un formulario de login con el `<input>` escrito a mano, sin la macro `input` de DESY, y el mensaje de error es un `<p>` suelto debajo del campo.
 
 **Test:**
-- Submit con campo vacío
-- axe-core detecta: "Form elements must have labels" — falso positivo (label existe)
+- Submit con el email mal escrito
+- axe-core no lo detecta: el campo tiene label y el mensaje se ve
 - **Test manual con lector de pantalla:**
-  - Introduce email mal
-  - Submit → focus al error summary
-  - Lector lee: "Email, edición" — **NO dice "error"**
-- **Issue:** falta `aria-invalid=true` y `aria-errormessage` con id del mensaje de error
+  - Tras recargar, el foco va al resumen de errores
+  - Al ir al campo, el lector lee: "Email, edición" — **NO dice "error"** ni lee el mensaje
+- **Issue:** el mensaje de error no está asociado al campo, porque el campo no sale de la macro
 
-**Fix** (en `componente-input-text-codigo.html`):
-```html
-<!-- ANTES -->
-<input type="email" id="email" name="email" />
+**Fix:** usar la macro `input` con `errorMessage` y seguir el patrón de errores (resumen de errores con enlace al campo, foco al recargar). No se añade `aria-invalid` a mano: la macro emite `aria-invalid` y `aria-errormessage` solo cuando recibe `errorMessage`, y deja de emitirlos cuando el campo es válido.
 
-<!-- DESPUÉS -->
-<input
-  type="email"
-  id="email"
-  name="email"
-  aria-invalid="true"
-  aria-errormessage="email-error"
-/>
-<p id="email-error" class="text-alert-dark text-sm">
-  <span class="sr-only">Error:</span>
-  El formato del email no es válido
-</p>
+```njk
+{{ componentInput({
+  "id": "email",
+  "name": "email",
+  "type": "email",
+  "autocomplete": "email",
+  "label": { "text": "Email" },
+  "errorMessage": { "text": "El formato del email no es válido" }
+}) }}
 ```
 
-**Re-test:** lector de pantalla ahora lee "Email, edición, error: el formato del email no es válido" ✅
+Si la validación se hace en el cliente, sin recargar, consulta MWG `accessible-error-announcement` y `validate-input-after-interaction`.
+
+**Re-test:** lector de pantalla ahora lee "Email, no válido, edición, error: el formato del email no es válido" ✅
 
 ## Recursos
 
