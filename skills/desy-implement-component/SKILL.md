@@ -529,13 +529,12 @@ Aplica a cada componente que generes:
 
 ```typescript
 // app/formulario.component.ts
+// Se declara en un NgModule que importa DesyButtonsModule y ReactiveFormsModule
 import { Component } from '@angular/core';
-import { DesyButtonComponent } from 'desy-angular';
 
 @Component({
   selector: 'app-formulario',
-  standalone: true,
-  imports: [DesyButtonComponent, ReactiveFormsModule],
+  standalone: false,
   templateUrl: './formulario.component.html',
 })
 export class FormularioComponent {
@@ -670,7 +669,7 @@ export class FormularioComponent {
 - **Si te piden una PÁGINA COMPLETA (no un componente suelto), primero clona el starter o trabaja dentro de uno.** Pasos: (1) `git clone https://bitbucket.org/sdaragon/desy-html-starter.git` a un dir temporal, (2) `npm install` para tener la librería `desy-html` en `node_modules/`, (3) generar el `.njk` en `src/templates/pages/`, (4) `npm run build` para compilar, (5) servir el `dist/` resultante. Revisa la sección `## Estructura de directorios del proyecto (modelo librería/starter/build)` de `desy-scaffold-project` para paths reales.
 - **El CSS que recibe el navegador es CSS compilado del proyecto, no de la librería.** Tailwind 4 escanea el proyecto y solo incluye las clases USADAS. Si el agente inventa una clase que no se usa en Nunjucks, no aparecerá en el CSS compilado y la página se verá rota. Paths inventados (observados en benchmarks con IA) que NO debes usar: `/assets/css/main.css`, `/assets/img/logo-X.svg`. Paths reales: `src/css/styles.css`, `public/images/<archivo>`, inline SVG para logos.
 - **No saltarse atributos ARIA.** DESY los incluye por defecto en sus ejemplos. Si los quitas, rompes accesibilidad.
-- **En Angular/Ionic, importar el componente.** Olvidar el import en `imports: []` es el error más común.
+- **En Angular/Ionic, importar el componente.** Olvidarlo es el error más común. En desy-angular, los componentes son `standalone: false`: importa el módulo (`DesyButtonsModule`, `DesyFormsModule`…) en el NgModule que declara tu componente (ver `desy-angular-translator`).
 - **En desy-html, usar `params.classes` del macro Nunjucks, no escribir `class="..."` en el HTML directamente.**
 - **No mezclar librerías.** Un proyecto no debería tener desy-html y desy-angular al mismo tiempo para el mismo componente.
 - **El `autocomplete` no es opcional.** Es accesibilidad: el navegador autocompleta, el usuario no tiene que recordar. Usar `autocomplete="email"`, `autocomplete="tel"`, `autocomplete="postal-code"`, etc.
