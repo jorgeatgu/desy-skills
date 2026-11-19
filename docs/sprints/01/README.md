@@ -8,7 +8,7 @@ Salió de `/create-feature` el 2026-11-19, a partir del grill de la misma sesió
 
 ## Prerrequisito
 
-- `main` en `6908241` o posterior, con `GLOSSARY.md`, `docs/modern-web-guidance-gap.md` y `docs/propuestas-sda.md` mergeados.
+- La rama de integración `docs/mwg-audit-sprint-01` (en `fork`), creada desde `main` `6908241`, con `GLOSSARY.md`, `docs/modern-web-guidance-gap.md`, `docs/propuestas-sda.md` y este sprint.
 - Una copia local de desy-html v17.0.2: `~/desy-evals-work/r180/node_modules/desy-html`.
 
 ## Decisiones cerradas
@@ -59,7 +59,15 @@ No hay suite de tests. Cada fase usa dos costuras, antes y después del cambio:
 | 4 | angular-translator + component-recognizer + scaffold-project | [fase-4-translator-recognizer-scaffold.md](fase-4-translator-recognizer-scaffold.md) | — |
 | 5 | Cierre | [fase-5-cierre.md](fase-5-cierre.md) | 1, 2, 3, 4 |
 
-**Frontera inicial:** F1, F2, F3 y F4 no comparten ficheros y pueden ir en paralelo, cada una en su worktree (`git worktree add -b fase-N-<slug> ../desy-skills-fase-N main`). F5 va al final.
+**Frontera inicial:** F1, F2, F3 y F4 no comparten ficheros y pueden ir en paralelo, cada una en su worktree (`git worktree add -b fase-N-<slug> ../desy-skills-fase-N docs/mwg-audit-sprint-01`). F5 va al final.
+
+## Ramas
+
+Todo el sprint va en **una única PR contra `main`**, desde la rama de integración `docs/mwg-audit-sprint-01` (fork `jorgeatgu/desy-skills`), que ya contiene la auditoría y este sprint.
+
+- **F1-F4:** cada una en su worktree y rama, creada desde la rama de integración: `git worktree add -b fase-N-<slug> ../desy-skills-fase-N docs/mwg-audit-sprint-01`. Al terminar, `/code-review` con la rama de integración como punto fijo. Después, en el checkout principal: `git switch docs/mwg-audit-sprint-01 && git merge --no-ff fase-N-<slug> && git push fork`, y `git worktree remove ../desy-skills-fase-N`. No hay PR por fase.
+- **Conflictos:** F1-F4 no comparten ficheros, así que el orden de merge da igual.
+- **F5:** sin worktree, en el checkout principal sobre la rama de integración (los enlaces de `~/.claude/skills` apuntan a él). Al terminar, abre la PR única `jorgeatgu:docs/mwg-audit-sprint-01` → `minilama2222/desy-skills:main`.
 
 ## Riesgos
 
@@ -68,11 +76,11 @@ No hay suite de tests. Cada fase usa dos costuras, antes y después del cambio:
 | F1 y F3 redactan modales o errores de forma distinta | Copiar literalmente el «Texto común» de este README. F5 lo comprueba con grep. |
 | Las líneas citadas se han movido | Las fases son una foto del 2026-11-19: manda el código. Buscar por el texto citado, no por el número de línea. |
 | Los prompts cargan el SKILL.md del checkout principal y no el del worktree | Indicar la ruta del worktree en el prompt. Si el agente carga el skill por nombre, repetir el prompt. |
-| Un hallazgo no se sostiene al releerlo | Se descarta y se apunta en la PR y en la retro. No se fuerza el cambio. |
+| Un hallazgo no se sostiene al releerlo | Se descarta y se apunta en el commit de merge y en la retro. No se fuerza el cambio. |
 
 ## Definición de hecho del sprint
 
-- Las 5 fases mergeadas, cada una con `/code-review` atendido.
+- Las 5 fases mergeadas en `docs/mwg-audit-sprint-01`, cada una con `/code-review` atendido, y una única PR de `docs/mwg-audit-sprint-01` contra `main`.
 - Los greps de todas las fases dan 0 coincidencias prohibidas sobre `skills/`.
 - La línea de choque de modales aparece igual en implement-component y validate-accessibility.
 - Prompts combinados 2.1 y 2.2 lanzados tras el sprint sin regresiones.

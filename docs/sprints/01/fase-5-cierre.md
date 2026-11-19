@@ -19,8 +19,8 @@ Las del README. No se introducen cambios en los skills en esta fase, salvo corre
 
 ## Costuras de test de esta fase
 
-- Los greps de F1-F4 sobre todo `skills/`, con `main` actualizado.
-- Prompts combinados 2.1 y 2.2, ahora sí con los skills instalados (el checkout principal en `main`).
+- Los greps de F1-F4 sobre todo `skills/`, con `docs/mwg-audit-sprint-01` actualizada.
+- Prompts combinados 2.1 y 2.2, ahora sí con los skills instalados (el checkout principal en `docs/mwg-audit-sprint-01`, porque los enlaces de `~/.claude/skills` apuntan a él).
 - Los greps nuevos de F3 aplicados al HTML que generen 2.1 y 2.2.
 
 ## Alcance
@@ -37,10 +37,10 @@ Enviar `docs/propuestas-sda.md` a SDA (lo hace una persona cuando quiera) y el s
 
 ## Tareas
 
-- [ ] Rama `fase-5-cierre` desde `main` con F1-F4 mergeadas.
+- [ ] Trabajar en el checkout principal sobre `docs/mwg-audit-sprint-01`, con F1-F4 mergeadas y `git pull` hecho.
 - [ ] Alcance 1-5.
 - [ ] `/code-review` atendido.
-- [ ] PR.
+- [ ] Push a `fork` y PR única `jorgeatgu:docs/mwg-audit-sprint-01` → `minilama2222/desy-skills:main`, con el skill `pr`.
 
 ## Criterios de aceptación
 
@@ -55,7 +55,7 @@ Enviar `docs/propuestas-sda.md` a SDA (lo hace una persona cuando quiera) y el s
 - `retro`: retrospectiva del sprint.
 - `desy-preflight-check` y `desy-validate-accessibility`: los usan los prompts combinados.
 
-Cierre: `/implement` para ejecutar, `/code-review` antes de la PR, `pr` para el cuerpo de la PR.
+Cierre: `/implement` para ejecutar, `/code-review` antes de la PR, `pr` para la PR única contra main.
 
 ## PROMPT
 
@@ -66,11 +66,11 @@ Lee enteros docs/sprints/01/README.md y docs/sprints/01/fase-5-cierre.md, y adem
 docs/skill-prompts-collection.md (§2.1 y §2.2) y las fases 1-4 de docs/sprints/01/.
 
 Las decisiones y las costuras de test están cerradas en esos documentos: no se re-preguntan.
-Orden: greps → coherencia del texto común → prompts combinados → tabla de la auditoría → /retro. Los prompts combinados se lanzan en sesiones nuevas con main ya actualizado en el checkout principal.
+Orden: greps → coherencia del texto común → prompts combinados → tabla de la auditoría → /retro. Los prompts combinados se lanzan en sesiones nuevas con docs/mwg-audit-sprint-01 en el checkout principal.
 Para los prompts de verificación, abre una sesión nueva e indica la ruta del SKILL.md del worktree (los enlaces de ~/.claude/skills apuntan al checkout principal).
 
-Crea la rama fase-5-cierre desde main y lanza:
+Trabaja en el checkout principal sobre docs/mwg-audit-sprint-01 (sin worktree) y lanza:
 /implement docs/sprints/01/fase-5-cierre.md
-Las costuras de la fase son los greps y los prompts: ejecútalos antes (rojo) y después (verde). Para /code-review, el punto fijo es main y la spec es
-docs/sprints/01/fase-5-cierre.md. Atiende sus hallazgos antes de abrir la PR.
+Las costuras de la fase son los greps y los prompts: ejecútalos antes (rojo) y después (verde). Para /code-review, el punto fijo es main (la PR final se compara con main) y la spec es
+docs/sprints/01/fase-5-cierre.md. Atiende sus hallazgos, haz push a fork y abre la PR única contra minilama2222/desy-skills:main con el skill pr.
 ```

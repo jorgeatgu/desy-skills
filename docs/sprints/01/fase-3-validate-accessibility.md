@@ -52,12 +52,12 @@ Hallazgos 16 (tablas), 20 (reflow 320 px), 22 y 26-27 (severidad baja o fuera de
 
 ## Tareas
 
-- [ ] Rama `fase-3-validate-accessibility` desde `main` (worktree propio).
+- [ ] Rama `fase-3-validate-accessibility` desde `docs/mwg-audit-sprint-01` (worktree propio).
 - [ ] Greps en rojo.
 - [ ] Alcance 1-7.
 - [ ] Greps nuevos probados sobre `r180/dist`.
 - [ ] `/code-review` atendido.
-- [ ] PR.
+- [ ] Merge `--no-ff` en `docs/mwg-audit-sprint-01`, push a `fork` y borrar el worktree (sin PR).
 
 ## Criterios de aceptación
 
@@ -77,7 +77,7 @@ Con `F=skills/desy-validate-accessibility/SKILL.md`:
 - `modern-web-guidance`: para recuperar la guía citada y verificar la regla antes de reescribir.
 - `desy-validate-accessibility`: su checklist, para revisar los ejemplos tocados.
 
-Cierre: `/implement` para ejecutar, `/code-review` antes de la PR, `pr` para el cuerpo de la PR.
+Cierre: `/implement` para ejecutar, `/code-review` antes de la PR, merge en `docs/mwg-audit-sprint-01` (sin PR por fase; la PR única la abre la fase 5 con `pr`).
 
 ## PROMPT
 
@@ -91,8 +91,8 @@ Las decisiones y las costuras de test están cerradas en esos documentos: no se 
 Orden: greps nuevos → modales → errores → resto. Para la línea de choque y el patrón de errores, copia el texto literal del README.
 Para los prompts de verificación, abre una sesión nueva e indica la ruta del SKILL.md del worktree (los enlaces de ~/.claude/skills apuntan al checkout principal).
 
-Crea la rama fase-3-validate-accessibility desde main y lanza:
+Crea el worktree y la rama fase-3-validate-accessibility desde docs/mwg-audit-sprint-01 y lanza:
 /implement docs/sprints/01/fase-3-validate-accessibility.md
-Las costuras de la fase son los greps y los prompts: ejecútalos antes (rojo) y después (verde). Para /code-review, el punto fijo es main y la spec es
-docs/sprints/01/fase-3-validate-accessibility.md. Atiende sus hallazgos antes de abrir la PR.
+Las costuras de la fase son los greps y los prompts: ejecútalos antes (rojo) y después (verde). Para /code-review, el punto fijo es docs/mwg-audit-sprint-01 y la spec es
+docs/sprints/01/fase-3-validate-accessibility.md. Atiende sus hallazgos y después mergea con --no-ff en docs/mwg-audit-sprint-01 y haz push a fork. No abras PR: la única PR la abre la fase 5.
 ```
