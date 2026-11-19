@@ -25,7 +25,7 @@ Paso **3** de la secuencia de `desy-preflight-check` — en paralelo con `desy-i
 - ❌ **Olvidar `<fieldset><legend class="sr-only">`** en grupos de inputs: WCAG 2.2 AA obligatorio.
 - ❌ **`<div role="group">` en lugar de `<fieldset>`**: `role="group"` no es estándar, usar fieldset siempre.
 - ❌ **`mb-sm` en h1 sin verificar `-mt-X` del siguiente**: causa overlap (benchmark 2026-06-08). El `c-h1` sin override + `-mt-base` en el lead es idiomático.
-- ❌ **Skip-link como `<button>`**: debe ser `<a href="#content">` (navega, no ejecuta).
+- ❌ **Skip-link como elemento `button`**: debe ser `<a href="#content">` (navega, no ejecuta).
 - ❌ **Cards con altura fija** (`height: 200px`): usar `h-full` para igualar altura en grid.
 - ❌ **Notificaciones sin `role="status"` o `role="alert"`**: sin live region, los screen readers no las anuncian.
 - ❌ **Cards con `<div>` en lugar de `<ul>/<li>`**: la semántica de lista es importante.
@@ -190,7 +190,7 @@ Cuando necesitas 4 inputs cortos (Número, Escalera, Piso, Puerta) en una sola f
   <h2 id="acciones-de-pagina-3" class="sr-only">Acciones de página</h2>
   <ul class="flex flex-wrap gap-sm">
     <li><button type="submit" class="c-button c-button--primary">Siguiente paso</button></li>
-    <li><button class="c-button c-button--transparent">Saltar</button></li>
+    <li><button type="button" class="c-button c-button--transparent">Saltar</button></li>
   </ul>
 </section>
 ```
@@ -316,7 +316,7 @@ El patrón `mt-base mb-base lg:mt-0 lg:mb-0` solo aplica cuando los inputs está
     <h2 id="acciones-de-pagina-3" class="sr-only">Acciones de página</h2>
     <ul class="flex flex-wrap gap-sm">
       <li><button type="submit" class="c-button c-button--primary">Siguiente paso</button></li>
-      <li><button class="c-button c-button--transparent">Saltar</button></li>
+      <li><button type="button" class="c-button c-button--transparent">Saltar</button></li>
     </ul>
   </section>
 </form>
@@ -351,9 +351,9 @@ Convención oficial de DESY (ver `_pattern.cabecera-editar.njk` y `_pattern.cabe
       <section aria-labelledby="acciones-de-cabecera">
         <h2 id="acciones-de-cabecera" class="sr-only">Menú de acciones</h2>
         <ul class="flex flex-wrap flex-col-reverse lg:flex-row-reverse gap-sm lg:items-center lg:ml-auto lg:pl-base">
-          <li><button class="c-button c-button--primary c-button--sm">Guardar y salir</button></li>
-          <li><button class="c-button c-button--sm">Guardar</button></li>
-          <li><button class="c-button c-button--sm">Salir</button></li>
+          <li><button type="button" class="c-button c-button--primary c-button--sm">Guardar y salir</button></li>
+          <li><button type="button" class="c-button c-button--sm">Guardar</button></li>
+          <li><button type="button" class="c-button c-button--sm">Salir</button></li>
         </ul>
       </section>
       <!-- /headerActionsBlock -->
@@ -424,7 +424,7 @@ Convención oficial de DESY (ver `_pattern.errores-estaticos.njk` y `_pattern.er
     <div class="flex-1">
       <h3 class="c-h3 text-error-base">Ha ocurrido un error</h3>
       <p class="c-paragraph-base mt-xs">No se ha podido procesar la solicitud. Inténtalo de nuevo.</p>
-      <button class="c-button c-button--primary mt-base">Reintentar</button>
+      <button type="button" class="c-button c-button--primary mt-base">Reintentar</button>
     </div>
   </div>
 </div>
@@ -556,7 +556,7 @@ Además de los anti-patterns ya documentados al inicio:
 
 ❌ **`<div>` con `role="group"` en lugar de `<fieldset>`.** Para agrupar inputs relacionados semánticamente, usa `<fieldset><legend>` (con legend sr-only si no debe verse). `role="group"` no es estándar y no lo reconoce screen readers consistentemente.
 
-❌ **Skip-link fuera del header o como `<button>`.** Debe ser `<a href="#content">` dentro del `<header>` (o antes del `<main>`). Como `<button>` no funciona porque no tiene href.
+❌ **Skip-link fuera del header o como elemento `button`.** Debe ser `<a href="#content">` dentro del `<header>` (o antes del `<main>`). Un `button` no navega porque no tiene href.
 
 ❌ **Cards con altura fija (`height: 200px`) en lugar de `h-full`.** Las cards en grid deben tener `h-full` para que igualen altura con las demás. Altura fija rompe en mobile y con contenido variable.
 
