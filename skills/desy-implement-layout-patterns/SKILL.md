@@ -419,7 +419,7 @@ Convención oficial de DESY (ver `_pattern.errores-estaticos.njk` y `_pattern.er
 ```html
 <div role="alert" class="border border-error-base bg-error-lighter rounded-sm p-base mb-base">
   <div class="flex items-start">
-    <svg class="w-5 h-5 text-error-base mr-base flex-shrink-0" aria-label="Error" viewBox="0 0 140 140">
+    <svg class="w-5 h-5 text-error-base mr-base flex-shrink-0" aria-hidden="true" focusable="false" viewBox="0 0 140 140">
       <!-- icono de error (X o triángulo) -->
     </svg>
     <div class="flex-1">
@@ -434,7 +434,7 @@ Convención oficial de DESY (ver `_pattern.errores-estaticos.njk` y `_pattern.er
 **Reglas:**
 
 * `role="alert"` es **obligatorio** (live region — los screen readers lo anuncian automáticamente).
-* `aria-labelledby` o `aria-label` en el icono SVG para accesibilidad.
+* Icono SVG: si el texto de al lado ya dice lo mismo (aquí, «Ha ocurrido un error»), `aria-hidden="true"`. Si el icono es lo único que lo dice, `role="img"` + `aria-label`; un `aria-label` sin `role="img"` no se anuncia de forma fiable.
 * Color semántico: `text-error-base` y `bg-error-lighter` (o `bg-warning-lighter` para warnings).
 * Icono + mensaje + acción correctiva (botón Reintentar, enlace Reportar error, etc.).
 
@@ -445,7 +445,7 @@ Convención oficial de DESY (ver `_pattern.notificacion-identificado.njk`):
 ```html
 <div class="c-notification c-notification--success mt-base" role="status" aria-live="polite">
   <div class="h-full mr-base">
-    <svg class="w-5 h-5 text-success-dark" aria-label="Éxito" viewBox="0 0 140 140">
+    <svg class="w-5 h-5 text-success-dark" role="img" aria-label="Éxito" focusable="false" viewBox="0 0 140 140">
       <!-- icono de check -->
     </svg>
   </div>
@@ -471,6 +471,7 @@ Convención oficial de DESY (ver `_pattern.notificacion-identificado.njk`):
 * `role="status" aria-live="polite"` para notificaciones de éxito (no interrumpe al screen reader).
 * `role="alert"` SOLO para errores que requieren atención inmediata.
 * `c-notification c-notification--success` (o `--error`, `--warning`, `--info`) para variante visual.
+* Icono de estado con `role="img"` + `aria-label="Éxito"`, como lo emite la macro oficial `notification`.
 * Botón de cerrar con `aria-label="Cerrar notificación"`.
 * `tabindex="-1"` en el título para que screen readers puedan enfocarlo programáticamente.
 
