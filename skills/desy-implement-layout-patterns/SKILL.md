@@ -260,7 +260,7 @@ El patrón `mt-base mb-base lg:mt-0 lg:mb-0` solo aplica cuando los inputs está
 ## Putting it together: estructura de wizard step
 
 ```html
-<form action="proximo-paso.html">
+<form action="proximo-paso.html" method="post">
   <div class="my-base">
 
     {# Botón volver (atrás) #}
@@ -323,6 +323,7 @@ El patrón `mt-base mb-base lg:mt-0 lg:mb-0` solo aplica cuando los inputs está
 ```
 
 **Notas finales:**
+- `method="post"` siempre que el formulario lleve datos personales (dirección, identidad, contacto): con GET acaban en la URL, el historial y los logs (MWG `forms`).
 - Cada input individual usa los patrones de `w-full` / `lg:w-full` / `w-44 lg:w-full` documentados en `desy-implement-component` (PR paralelo).
 - Los headings (H1, H2) dentro de grid también llevan `w-full`.
 - Los párrafos intro pueden usar `col-span-*` para indicar columnas a ocupar en lugar de `w-full`.
@@ -522,10 +523,10 @@ La macro pinta el título en `<h2>` y cada pregunta como `<button type="button" 
 
 ## Convención de bloques `<!-- blockName -->`
 
-En las páginas oficiales del sitio DESY, las secciones dentro de `<form>` o del layout principal están delimitadas por comentarios HTML con el formato `<!-- blockName -->` y `<!-- /blockName -->`. Esta convención es usada por el `markdown-generator` (script de `markdown-generator.config.js`) para extraer secciones al generar la documentación.
+En las páginas oficiales del sitio DESY, las secciones dentro de un `form` o del layout principal están delimitadas por comentarios HTML con el formato `<!-- blockName -->` y `<!-- /blockName -->`. Esta convención es usada por el `markdown-generator` (script de `markdown-generator.config.js`) para extraer secciones al generar la documentación.
 
 ```html
-<form>
+<form action="#" method="post">
   <!-- notificationHeaderBlock -->
   <!-- /notificationHeaderBlock -->
 
