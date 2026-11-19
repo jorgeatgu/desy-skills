@@ -455,6 +455,7 @@ Aplica a cada componente que generes:
 
 ### Botones
 - [ ] Elemento `<button>` (no `<div>` ni `<a>` salvo que enlace)
+- [ ] Submit nunca deshabilitado para bloquear la validación (no ligues `disabled` a la invalidez del formulario): deja enviar y muestra los errores. Contra el doble envío, `preventDoubleClick` (MWG `forms`)
 - [ ] Etiqueta clara (verbo en infinitivo, 1-2 palabras, no mayúsculas)
 - [ ] Si lleva icono + texto: `aria-hidden=true` en SVG, texto describe la acción
 - [ ] Si lleva solo icono: `role=img` + `aria-label` que describe la acción
@@ -513,7 +514,6 @@ Aplica a cada componente que generes:
 - Texto: "Enviar"
 - type: submit
 - preventDoubleClick: true
-- disabled dinámico: `formulario.invalid`
 
 **Snippet generado (template):**
 
@@ -521,7 +521,6 @@ Aplica a cada componente que generes:
 <desy-button
   [type]="'submit'"
   [text]="'Enviar'"
-  [disabled]="formulario.invalid"
   [preventDoubleClick]="true"
   (clickEvent)="onSubmit()">
 </desy-button>
@@ -547,7 +546,7 @@ export class FormularioComponent {
 
 **Accesibilidad verificada:**
 - ✅ Elemento `<desy-button>` renderiza `<button type="submit">`
-- ✅ `aria-disabled` automático cuando `disabled=true`
+- ✅ Submit siempre activo: si el formulario es inválido, se deja enviar y se muestran los errores
 - ✅ `preventDoubleClick` evita doble submit
 - ✅ El texto describe la acción ("Enviar")
 - ✅ Contraste OK (variant default)
