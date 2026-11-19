@@ -18,7 +18,7 @@ Paso **1** de la secuencia de `desy-preflight-check` — SOLO si hay imagen de r
 ## Errores típicos que evita
 - ❌ **Saltarse esta skill cuando hay imagen** y asumir "a ojo": sesión OCX julio 2026 (maqueta 404 Portal Salud) improvisó placeholders para el footer institucional porque el agente cargó 5 skills pero NO esta. El catálogo tiene 57 componentes + 653 ejemplos con `visualDescription` escrita por SDA.
 - ❌ **Confundir `alert` con `notification`**: `alert` es wrapper; `notification` es lo visible (icono + texto + X).
-- ❌ **`modal` vs `dialog` vs `drawer`**: modal bloquea UI con overlay; dialog usa `<dialog>` nativo; drawer es panel lateral (offcanvas).
+- ❌ **`modal` vs `dialog` vs `drawer`**: modal bloquea UI con overlay; dialog es para confirmaciones (los dos son `<div>` con `role="dialog"` gestionados por `dialog.js`); drawer es panel lateral (offcanvas).
 - ❌ **`input` vs `input-group` vs `date-input` vs `datepicker`**: atómico vs compuesto vs formato fecha vs popup calendario.
 - ❌ **`table` vs `table-advanced`**: filtros/checkboxes/paginación → `table-advanced`.
 - ❌ **`header-mini` vs `header` vs `header-advanced`**: 1 banda fina solo logo vs 1 banda con nav vs 3 bandas (logo / nombre portal / nav).
@@ -130,7 +130,7 @@ Estas son las confusiones más comunes — revísalas SIEMPRE antes de proponer 
 ### 2. **"modal" vs "dialog" vs "drawer"**
 
 - `modal`: bloquea toda la UI, fondo oscuro overlay, contenido centrado. Es el "modal tradicional"
-- `dialog`: similar al modal pero más semántico, usa el `<dialog>` nativo de HTML. Para confirmaciones
+- `dialog`: para confirmaciones. Igual que `modal`, es un `<div>` con `role="dialog"` gestionado por `dialog.js` (`components/dialog/_template.dialog.njk` emite un `<div>`). Ningún componente DESY usa el elemento nativo de HTML; la diferencia es de uso, no de elemento
 - `drawer`: panel lateral que entra desde un lado (derecha/izquierda/abajo). NO bloquea toda la UI
 
 Si ves overlay oscuro cubriendo la página → modal o dialog. Si ves panel lateral → drawer (que es un pattern de offcanvas en DESY, no un componente directo).
