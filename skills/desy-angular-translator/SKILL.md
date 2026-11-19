@@ -50,7 +50,7 @@ Después del paso 5 de la secuencia de `desy-preflight-check` — solo si target
 | **Eventos** | NO emite (HTML estático) | `(clickEvent)="handler($event)"` (Output TS) |
 | **Estado disabled** | `disabled: true` (bool en macro) | `[disabled]="true"` o `[disabled]="isDisabled"` |
 | **Atributos a11y** | Los pone automáticamente la macro | Inputs explícitos: `ariaLabel`, `ariaDescribedBy`, `ariaLabelledBy`, etc. |
-| **Aria/role/tabindex** | Implícitos en el HTML generado | Explícitos como inputs (más control, más verboso) |
+| **Aria/role/tabindex** | Implícitos en el HTML generado | Disponibles como inputs, pero solo cuando el elemento renderizado no los da (`<desy-button>` ya renderiza `<button>`/`<a>`: sin `role` ni `tabindex`) |
 
 ## Parámetros que SOLO existen en desy-angular (no en desy-html)
 
@@ -155,16 +155,15 @@ export class MyComponent {
   ...
   [routerLink]="'/url'"           <!-- solo si necesitas router interno -->
   [routerLinkActiveClasses]="'active'"
-  ariaLabel="Click me"
-  role="button"
-  [tabindex]="0"
 >
 ```
 
+Sin `role` ni `tabindex`: `<desy-button>` ya renderiza un `<button>` o un `<a>` nativo, con su rol y su foco.
+
 ### Paso 6: Verificar accesibilidad
 
-Angular hace explícitas las opciones a11y que HTML hace implícitas. Revisa:
-- `ariaLabel` vs `<label>`: en Angular se prefiere `ariaLabel` (es label interno del componente)
+Angular expone como inputs opciones a11y que HTML hace implícitas, pero solo se usan cuando el elemento renderizado no las da. Revisa:
+- Nombre accesible: primero el texto o el label visible (`text`, `labelData`). `ariaLabel` solo si no hay texto visible (botón de solo icono); no sustituye a un label que ya se ve
 - `ariaDescribedBy`: conecta con el id del elemento que describe
 - `ariaDisabled` vs `disabled`: el primero es semántico, el segundo es comportamiento
 
