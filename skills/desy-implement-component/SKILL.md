@@ -1,6 +1,6 @@
 ---
 name: desy-implement-component
-description: "Implementa CUALQUIER componente DESY con el macro de su librería. Úsala SIEMPRE con un componente suelto: botón, input, tabla, modal, acordeón. NO páginas."
+description: "Implementa cualquier componente DESY con el macro de su librería, sea botón, tabla, acordeón u otro. SIEMPRE un componente suelto, nunca una página entera."
 ---
 
 # desy-implement-component
