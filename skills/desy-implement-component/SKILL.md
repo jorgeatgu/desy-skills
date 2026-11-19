@@ -455,10 +455,11 @@ Aplica a cada componente que generes:
 
 ### Botones
 - [ ] Elemento `<button>` (no `<div>` ni `<a>` salvo que enlace)
+- [ ] Submit nunca deshabilitado para bloquear la validación (no ligues `disabled` a la invalidez del formulario): deja enviar y muestra los errores. Contra el doble envío, `preventDoubleClick` (MWG `forms`)
 - [ ] Etiqueta clara (verbo en infinitivo, 1-2 palabras, no mayúsculas)
 - [ ] Si lleva icono + texto: `aria-hidden=true` en SVG, texto describe la acción
-- [ ] Si lleva solo icono: `role=img` + `aria-label` que describe la acción
-- [ ] Si `target=_blank`: atributo `title` avisando
+- [ ] Si lleva solo icono: `aria-label` en el `<button>` que describe la acción, y el SVG con `aria-hidden="true"` (el nombre lo lleva el botón, no el icono)
+- [ ] Si abre en ventana nueva (`target="_blank"`): avísalo dentro del enlace, con texto visible o con `<span class="sr-only">(se abre en ventana nueva)</span>`. No uses el atributo `title` para avisar: solo se ve al pasar el ratón y no llega por teclado (MWG `accessibility`)
 
 ### Inputs / Formularios
 - [ ] `<label>` visible y único, apunta al `id` del input
@@ -467,8 +468,9 @@ Aplica a cada componente que generes:
 - [ ] `autocomplete` cuando aplique (navegador puede autocompletar)
 - [ ] `type` correcto (`text`, `email`, `tel`, `date`, etc.)
 - [ ] Si tiene hint: `<p id="hint">` + `aria-describedby` en el input
-- [ ] Si tiene error: `<p id="error">` con `<span class="sr-only">Error:</span>` + `aria-errormessage` en el input + `aria-invalid=true`
-- [ ] Foco al error-summary al submit con errores
+- [ ] Si tiene error, sigue el patrón de errores:
+
+  > Con error de servidor: la macro emite `aria-invalid="true"` y `aria-errormessage`; el mensaje va con la macro `errorMessage` (prefijo `<span class="sr-only">Error:</span>`); arriba del formulario, un resumen de errores con enlaces a cada campo; al recargar, foco en el resumen o en el primer campo con error. Validación en el cliente: consulta MWG `accessible-error-announcement` y `validate-input-after-interaction` (`aria-invalid="false"` hasta `:user-invalid`). No se fija `aria-invalid="true"` a mano en el marcado.
 - [ ] `<form>` con `aria-label` o `aria-labelledby`
 
 ### Tablas
@@ -486,14 +488,17 @@ Aplica a cada componente que generes:
 - [ ] Click fuera del contenedor cierra el modal
 - [ ] Icono de cierre con `aria-label`
 - [ ] Variante destructiva: botón principal a la derecha, color `alert`
+- [ ] Variante destructiva: foco inicial en Cancelar (la acción segura), en lugar del encabezado. Dale un `id` al botón Cancelar y pásalo como tercer argumento (`focusFirst`) de `openDialog`. En desy-html, en el botón que abre el modal: `"onclick": "openDialog('modal-eliminar', this, 'boton-cancelar-eliminar')"`.
+
+> Choque con MWG `dialog`: MWG recomienda `<dialog>` nativo sin `role`/`aria-modal`. Los componentes `modal` y `dialog` de DESY son `<div>` gestionados por `dialog.js`, que exige `role="dialog"`; por eso aquí sí se pide. Propuesta SDA: `docs/propuestas-sda.md` §1.
 
 ### Imágenes
 - [ ] `alt` descriptivo (o `alt=""` si decorativa)
-- [ ] Si SVG personalizado: `role=img` + `aria-label`
+- [ ] Si es un SVG informativo suelto (no dentro de un botón ni de un enlace): `role="img"` + `aria-label`
 
 ### Iconos
 - [ ] Si acompañan texto: `aria-hidden=true` (el texto ya describe la acción)
-- [ ] Si van solos: `role=img` + `aria-label` que describa la acción, no el icono
+- [ ] Si van solos dentro de un botón o enlace: `aria-hidden="true"` en el SVG y `aria-label` en el botón o enlace, que describa la acción, no el icono
 
 ### Contraste
 - [ ] Texto sobre fondo blanco: usar colores `neutral-base` o más oscuros
@@ -510,7 +515,6 @@ Aplica a cada componente que generes:
 - Texto: "Enviar"
 - type: submit
 - preventDoubleClick: true
-- disabled dinámico: `formulario.invalid`
 
 **Snippet generado (template):**
 
@@ -518,7 +522,6 @@ Aplica a cada componente que generes:
 <desy-button
   [type]="'submit'"
   [text]="'Enviar'"
-  [disabled]="formulario.invalid"
   [preventDoubleClick]="true"
   (clickEvent)="onSubmit()">
 </desy-button>
@@ -544,7 +547,7 @@ export class FormularioComponent {
 
 **Accesibilidad verificada:**
 - ✅ Elemento `<desy-button>` renderiza `<button type="submit">`
-- ✅ `aria-disabled` automático cuando `disabled=true`
+- ✅ Submit sin `disabled`: aunque el formulario sea inválido, se deja enviar y `onSubmit()` muestra los errores
 - ✅ `preventDoubleClick` evita doble submit
 - ✅ El texto describe la acción ("Enviar")
 - ✅ Contraste OK (variant default)
@@ -658,6 +661,7 @@ export class FormularioComponent {
 - ✅ Esc cierra el modal
 - ✅ Botón destructivo (`color="danger"`) a la derecha
 - ✅ Botón secundario (`fill="clear"`) a la izquierda
+- ⚠️ Foco inicial en Cancelar (checklist de modales): este snippet no lo fija; hay que añadirlo antes de dar el modal por bueno.
 
 ## Gotchas
 
