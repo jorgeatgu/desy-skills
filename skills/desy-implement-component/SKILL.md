@@ -468,8 +468,10 @@ Aplica a cada componente que generes:
 - [ ] `autocomplete` cuando aplique (navegador puede autocompletar)
 - [ ] `type` correcto (`text`, `email`, `tel`, `date`, etc.)
 - [ ] Si tiene hint: `<p id="hint">` + `aria-describedby` en el input
-- [ ] Si tiene error: `<p id="error">` con `<span class="sr-only">Error:</span>` + `aria-errormessage` en el input + `aria-invalid=true`
-- [ ] Foco al error-summary al submit con errores
+- [ ] Si tiene error, sigue el patrón de errores:
+
+> Con error de servidor: la macro emite `aria-invalid="true"` y `aria-errormessage`; el mensaje va con la macro `errorMessage` (prefijo `<span class="sr-only">Error:</span>`); arriba del formulario, un resumen de errores con enlaces a cada campo; al recargar, foco en el resumen o en el primer campo con error. Validación en el cliente: consulta MWG `accessible-error-announcement` y `validate-input-after-interaction` (`aria-invalid="false"` hasta `:user-invalid`). No se fija `aria-invalid="true"` a mano en el marcado.
+
 - [ ] `<form>` con `aria-label` o `aria-labelledby`
 
 ### Tablas
