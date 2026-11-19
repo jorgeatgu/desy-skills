@@ -65,11 +65,22 @@ grep -c '<legend' "$P"
 for id in $(grep -oE '<(input|select|textarea)[^>]* id="[^"]+"' "$P" | grep -v 'type="hidden"' | sed -E 's/.* id="([^"]+)".*/\1/'); do grep -q "for=\"$id\"" "$P" || echo "sin label: $id"; done
 # 5. Skip-link → ≥ 1
 grep -c 'c-skip-link' "$P"
+# 6. <html> con lang → no imprime nada
+grep -q '<html[^>]* lang="[^"]\{1,\}"' "$P" || echo "falta lang en <html>"
+# 7. <title> no vacío → 1
+grep -c '<title>[^<]\{1,\}</title>' "$P"
+# 8. <meta name="viewport"> → 1
+grep -c '<meta name="viewport"' "$P"
+# 9. Ningún submit deshabilitado → 0
+tr '\n' ' ' < "$P" | grep -oE '<(button|input)[^>]*type="submit"[^>]*>' | grep -c 'disabled'
+# 10. Cada <button> dentro de un <form> con type explícito → no imprime nada
+perl -0777 -ne 'while (/<form\b.*?<\/form>/gs) { for (my @b = $& =~ /<button\b[^>]*>/g) { s/\s+/ /g; print "sin type: $_\n" unless / type="/ } }' "$P"
 ```
 
 - [ ] Los títulos visibles de sección son h2 (o h3) **fuera** del fieldset, y la `legend` los repite con `class="sr-only"`. Una `legend class="c-h2"` deja el `main` sin encabezados.
 - [ ] Los encabezados no saltan de nivel (h1 → h2 → h3).
 - [ ] Los iconos decorativos llevan `aria-hidden="true"`, y los botones que solo tienen icono, `aria-label`.
+- [ ] Los botones del formulario que no envían (Cancelar, Añadir, Ver contraseña) llevan `type="button"`: sin `type`, un `<button>` dentro de `<form>` envía el formulario (la macro `button` de desy-html no pone `type`, y en desy-angular el valor por defecto es `submit`). El submit no se deshabilita: se valida al enviar y se muestran los errores.
 
 ## Workflow
 
