@@ -475,39 +475,50 @@ Convención oficial de DESY (ver `_pattern.notificacion-identificado.njk`):
 
 ### FAQs acordeón
 
-Convención oficial de DESY (ver `_pattern.faqs-acordeon.njk`):
+Usa las macros oficiales de desy-html: `components/details` (una pregunta por `<details>`) o, si cada pregunta tiene que ser un heading navegable, `components/accordion`.
 
-```html
-<h2 class="c-h3">Preguntas frecuentes</h2>
-<div class="c-accordion" data-module="c-accordion">
-  <details>
-    <summary>
-      <h3 class="c-h4 flex-1">¿Qué hacer si surge un error?</h3>
-      <svg class="w-4 h-4" aria-hidden="true"><!-- chevron --></svg>
-    </summary>
-    <div class="py-base">
-      <p class="c-paragraph-base">Respuesta de la FAQ...</p>
-    </div>
-  </details>
-  <details>
-    <summary>
-      <h3 class="c-h4 flex-1">¿Cómo dar permisos a una persona?</h3>
-      <svg class="w-4 h-4" aria-hidden="true"><!-- chevron --></svg>
-    </summary>
-    <div class="py-base">
-      <p class="c-paragraph-base">Otra respuesta...</p>
-    </div>
-  </details>
-</div>
+**Por defecto, macro `details`:**
+
+```njk
+{% from "components/details/_macro.details.njk" import componentDetails %}
+
+<section aria-labelledby="preguntas-frecuentes">
+  <h2 id="preguntas-frecuentes" class="c-h3">Preguntas frecuentes</h2>
+  {% call componentDetails({ "summary": { "text": "¿Qué hacer si surge un error?" } }) %}
+    <p class="c-paragraph-base">Respuesta de la FAQ...</p>
+  {% endcall %}
+  {% call componentDetails({ "summary": { "text": "¿Cómo dar permisos a una persona?" } }) %}
+    <p class="c-paragraph-base">Otra respuesta...</p>
+  {% endcall %}
+</section>
 ```
+
+La macro emite `<summary>` con un `<span class="c-link">` dentro y el marcador del navegador; no añadas heading, chevron ni envoltorio `c-accordion`.
+
+**Si cada pregunta debe ser heading, macro `accordion`:**
+
+```njk
+{% from "components/accordion/_macro.accordion.njk" import componentAccordion %}
+
+{{ componentAccordion({
+  "idPrefix": "faq",
+  "heading": { "text": "Preguntas frecuentes" },
+  "headingLevel": 2,
+  "allowMultiple": true,
+  "items": [
+    { "headerText": "¿Qué hacer si surge un error?", "html": "<p class='c-paragraph-base'>Respuesta de la FAQ...</p>" },
+    { "headerText": "¿Cómo dar permisos a una persona?", "html": "<p class='c-paragraph-base'>Otra respuesta...</p>" }
+  ]
+}) }}
+```
+
+La macro pinta el título en `<h2>` y cada pregunta como `<button type="button" aria-expanded>` dentro de un `<h3>` (un nivel por debajo de `headingLevel`).
 
 **Reglas:**
 
-* Usar `<details>` + `<summary>` HTML nativo (sin JavaScript).
-* `<h3>` dentro del `<summary>` para que screen readers anuncien correctamente.
-* Chevron (SVG) al final del `<summary>` con `aria-hidden="true"` (decorativo).
-* `allowMultiple` solo si la pregunta del usuario lo requiere (normalmente un solo acordeón abierto a la vez).
-* Si necesitas un comportamiento más complejo (e.g. analítica de apertura), usa `componentAccordion` con JS.
+* Nunca un heading dentro de `<summary>`: JAWS y TalkBack exponen `summary` como botón y descartan el heading, así que no se puede saltar de pregunta en pregunta (MWG `accordion`). Si hace falta navegar por headings, usa `componentAccordion`.
+* Varias preguntas abiertas a la vez por defecto: con `details`, no pongas el mismo `name` a todos; con `accordion`, pasa `"allowMultiple": true` (sin él, abrir una cierra las demás). Solo hazlo exclusivo si el usuario lo pide.
+* El título del bloque es un heading visible antes de las preguntas; ajusta su nivel a la jerarquía de la página.
 
 ## Convención de bloques `<!-- blockName -->`
 
