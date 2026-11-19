@@ -158,7 +158,7 @@ Manual, ~15 minutos. Activa NVDA / VoiceOver / Orca y recorre la página:
 | Lectura de un formulario completo | "Formulario de contacto" (por `aria-label` o `aria-labelledby`) |
 | Lectura de una tabla | "Tabla, 3 filas, 4 columnas. Encabezado: Mes, Pago 1, Pago 2" |
 | Lectura de un modal al abrirse | Anuncia el diálogo con su título (por `aria-labelledby`), p. ej. "¿Eliminar expediente?, diálogo"; en la variante destructiva, el foco cae en "Cancelar, botón" |
-| Lectura de un link que abre nueva ventana | Anuncia "enlace Se abre en ventana nueva" (por `title`) |
+| Lectura de un link que abre nueva ventana | Lee el aviso dentro del enlace, p. ej. "Informe anual (se abre en ventana nueva), enlace" (texto visible o `sr-only`, no `title`) |
 | Navegación por landmarks (D / L en NVDA) | Recorre `<header>`, `<nav>`, `<main>`, `<footer>` |
 
 **Si algo falla:** corregir `aria-label`s, roles, descripciones, etc.
@@ -183,15 +183,15 @@ Manual + herramientas:
 
 | Elemento | Ratio mínimo |
 |---|---|
-| Texto normal (≥18px o ≥14px bold) | 4.5:1 |
-| Texto grande (≥18px bold o ≥24px) | 3:1 |
-| Iconos UI (funcionales, no decorativos) | 3:1 |
-| Boundaries de inputs | 3:1 |
+| Texto normal (todo el que no es texto grande) | 4.5:1 |
+| Texto grande (≥24 px, o ≥18.66 px en negrita) | 3:1 |
+| Componentes de interfaz e iconos funcionales (no decorativos) | 3:1 |
+| Bordes de inputs | 3:1 |
 
 **Comprobar:**
 - Texto sobre fondo blanco
 - Texto sobre colores `light` (mensajes de estado)
-- Texto sobre colores `base` (botones, solo permitido si semibold ≥16px)
+- Texto sobre colores `base` (botones, solo permitido si semibold ≥16px; a ese tamaño sigue siendo texto normal y necesita 4.5:1)
 - Borders de inputs (1px) sobre fondo
 
 ### Paso 5: Test responsive (mobile + desktop)
@@ -279,7 +279,8 @@ Tras todos los tests, compila un reporte de accesibilidad:
 - 2.1.2 No Keyboard Trap: [ok / falla]
 - 2.4.3 Focus Order: [ok / falla]
 - 2.4.7 Focus Visible: [ok / falla]
-- 2.5.5 Target Size (AAA, pero es best practice): [ok / falla]
+- 2.5.8 Target Size (Minimum): 24×24 px CSS como mínimo, o espaciado equivalente: [ok / falla]
+- 2.5.5 Target Size (Enhanced), AAA, recomendación: 44×44 px: [ok / falla]
 - 3.3.1 Error Identification: [ok / falla]
 - 3.3.2 Labels or Instructions: [ok / falla]
 - 4.1.2 Name, Role, Value: [ok / falla]
@@ -292,8 +293,8 @@ Tras todos los tests, compila un reporte de accesibilidad:
 - [ ] Elemento `<button>` (no `<div>` ni `<a>` salvo que enlace)
 - [ ] Etiqueta clara (verbo en infinitivo, 1-2 palabras, no mayúsculas)
 - [ ] Si lleva icono + texto: `aria-hidden=true` en SVG
-- [ ] Si lleva solo icono: `role=img` + `aria-label`
-- [ ] Si `target=_blank`: atributo `title` avisando
+- [ ] Si lleva solo icono: `aria-label` en el `<button>` que describe la acción, y el SVG con `aria-hidden="true"` (el nombre lo lleva el botón, no el icono)
+- [ ] Si abre en ventana nueva (`target="_blank"`): el aviso va dentro del enlace, con texto visible o con `<span class="sr-only">(se abre en ventana nueva)</span>`. No uses el atributo `title` para avisar: solo se ve al pasar el ratón y no llega por teclado (MWG `accessibility`)
 - [ ] Disabled: `aria-disabled` automático, NO botón invisible
 - [ ] Estados: default / loading / success / error
 - [ ] Contraste: border primary-base 1px sobre fondo blanco
@@ -335,11 +336,12 @@ Tras todos los tests, compila un reporte de accesibilidad:
 
 ### Imágenes
 - [ ] `alt` descriptivo (o `alt=""` si decorativa)
-- [ ] Si SVG personalizado: `role=img` + `aria-label`
+- [ ] Si SVG personalizado informativo, fuera de un botón o enlace: `role="img"` + `aria-label`
 
 ### Iconos
 - [ ] Si acompañan texto: `aria-hidden=true`
-- [ ] Si van solos: `role=img` + `aria-label` que describa la acción
+- [ ] Si van solos dentro de un botón o enlace: `aria-hidden="true"` en el icono y `aria-label` en el control, que describa la acción
+- [ ] Si van solos y transmiten información (estado, aviso) fuera de un control: `role="img"` + `aria-label`
 
 ### Navegación
 - [ ] Landmarks: `<header>`, `<nav>`, `<main>`, `<footer>`
@@ -350,7 +352,7 @@ Tras todos los tests, compila un reporte de accesibilidad:
 
 ### Contraste (recordatorio)
 - [ ] Texto sobre fondo blanco: usar colores `neutral-base` o más oscuros (4.5:1+)
-- [ ] Texto sobre colores `base` (botones): solo permitido si peso semibold y ≥16px (3:1+)
+- [ ] Texto sobre colores `base` (botones): solo permitido si peso semibold y ≥16px, y con 4.5:1 (16 px semibold no es texto grande)
 - [ ] Texto sobre colores `light`: en mensajes de estado, no en texto principal
 - [ ] Borders de inputs: 3:1+ sobre fondo
 
