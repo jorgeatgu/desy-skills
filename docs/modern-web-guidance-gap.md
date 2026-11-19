@@ -22,7 +22,7 @@
 
 ## Eje 1 — Contenido web: tabla skill × guía × hallazgo
 
-**Estado** (cierre del sprint 01, `docs/sprints/01/`): *resuelto en sprint 01*; *descartado* tras verificar desy-html (ver «Correcciones»); *pendiente sprint 02* (severidad media que no entró en el alcance); *fuera* (sin hueco, severidad baja o excluido en el README del sprint). La fila 10 queda resuelta en el renderizado en servidor; la validación en el cliente se remite a MWG. Las líneas citadas son las del commit `6908241`; tras el sprint, busca por el texto.
+**Estado** (cierre del sprint 01, `docs/sprints/01/`): *resuelto en sprint 01*; *descartado* tras verificar desy-html (ver «Correcciones»); *pendiente sprint 02* (severidad media que no entró en el alcance); *fuera* (sin hueco, severidad baja o excluido en el README del sprint). La fila 3 está resuelta en desy-html y desy-angular; el ejemplo de desy-ionic sigue sin fijar el foco en Cancelar (va con la fila 4).
 
 | # | Skill (ruta:línea) | Guía (ruta:línea, id) | Hallazgo | Sev. | Tipo | Estado |
 |---|---|---|---|---|---|---|
@@ -91,7 +91,7 @@ Fuente primaria para la forma de MWG: `~/.claude/skills/modern-web-guidance/SKIL
 | C10 | Utilidades Tailwind, escala de tokens y grid por viewport (`lg:grid-cols-4`) (`styles-reference`, `layout-patterns:121-156`) | `css.md:41` (evitar BEM), `css.md:208` (tokens en `:root`), `card.md:33` y `form-factor-adaptation.md:33` (container queries) | Arquitectura CSS del sistema. Fuera de discusión: DESY manda en clases y tokens. |
 | C11 | Iconos SVG inline (`styles-reference:184-191`) | `icons.md:7-18` (sistema de iconos CSS con máscaras y `currentColor`; inline solo para animar/estilizar interiores) | Decisión de la librería. El skill ya aplica bien `aria-hidden`/`role=img`. |
 | C12 | `c-toggle` con dos iconos y `isSwitch` (`component-recognizer:252`; catálogo `toggle`) | `guides/forms/switch.md:3` (`<input type="checkbox" switch>`) | Componente propio de DESY; `switch` nativo es Limited availability (solo Safari). |
-| C13 | Variante «tabs en escritorio» de `menu-horizontal` (catálogo) | `guides/ui-components/tabs.md:20` («DO NOT use… the WAI-ARIA tabs pattern for page navigation») | Mientras la variante sea solo visual (sin `role=tab`) no hay conflicto; no verificable aquí. |
+| C13 | Variante «tabs en escritorio» de `menu-horizontal` (catálogo) | `guides/ui-components/tabs.md:20` («DO NOT use… the WAI-ARIA tabs pattern for page navigation») | Mientras la variante sea solo visual (sin `role=tab`) no hay choque; no verificable aquí. |
 | C14 | Spinner `c-spinner` (`implement-component:116-125`) | `guides/ui-components/spinner.md:7,21` (`<progress aria-label>` como base semántica) | Componente propio; el catálogo tiene variante «con texto para lector de pantalla». |
 | C15 | Posicionamiento de dropdown/listbox/modal con `@floating-ui/dom`; «un dropdown custom debe usar las mismas dependencias» (`angular-translator:516-525`) | `guides/ui-components/menu.md:57` («Use CSS anchor positioning, not JavaScript coordinates»); fallbacks en `persistent-toast-notifications.md:97-177` y `navbar.md:243-261`; `viewport-aware-dropdowns` | La librería impone posicionamiento por JS. Choque limpio; anchor positioning sigue en Limited availability (Firefox sin soporte según las propias guías), así que no es urgente proponerlo a SDA. |
 

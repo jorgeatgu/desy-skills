@@ -28,7 +28,7 @@ Por orden de severidad:
 2. **Criterios que demuestren rojo antes de aceptarse (estándares de la spec).** En `/create-feature`, cada grep de criterio debe venir con su salida contra la rama base. Si da 0 antes del cambio, se reescribe antes de cerrar la fase.
 3. **Separar marcado de prosa en los greps.** Que los greps busquen dentro de bloques de código (```` ```html ````/```` ```njk ````) y no en la prosa. Así no hace falta reescribir frases que prohíben el marcado para que el grep pase.
 4. **Insumos de los prompts combinados en el repo de evals (acceso a información).** Guardar `mockup-portal.png` (acceso-cargando) y el gold de paso-3 en `desy-skills-evals` y citarlos por ruta en `docs/skill-prompts-collection.md` §2. Así nadie depende de capturar ni de servir nada en cada sprint. Para que el combinado sea costura de este tipo de huecos, su mockup debe tener formulario y un modal destructivo (p. ej. paso-3 + confirmación de borrado), y el prompt debe pedir `npm run build` antes de validar.
-5. **Issues sobre los skills que declaró el propio agente en 2.1**, para el sprint 02:
+5. **Huecos en los skills que declaró el propio agente en 2.1**, para el sprint 02:
    - `desy-scaffold-project` dice «no ejecutes los bloques bash» aunque el usuario pida el scaffold en una sesión no interactiva.
    - El caso fijo «acceso-cargando» de `linter.py` propone `header-mini`, pero el gold usa `header`.
    - El catálogo cita desy-html v16.x y la versión instalada es la 17.0.2.
@@ -38,7 +38,14 @@ Por orden de severidad:
 
 ## Qué cambia para el siguiente
 
-- **Sprint 02 hereda** lo diferido en los merges: filas 12 y 20 de la auditoría (pendientes), la notificación escrita a mano en `layout-patterns`, el borde de error del checklist de `validate-accessibility` (`alert-dark` frente a `border-alert-base ring-2` de la macro), «peer dependencies de Angular 19» en `scaffold-project`, el `routerLink`, `*appCustomInnerContent` y `isSelect` del traductor, y `linter.py` desalineado con el SKILL.md del recognizer.
+- **El plan del sprint 02 se amplía** con las filas que la auditoría marca *pendiente sprint 02* (12 y 20). Hoy el README solo lo plantea como sprint de forma de los skills.
+- **Sprint 02 hereda** lo diferido en los merges:
+  - `implement-component`: el ejemplo de desy-ionic sin foco en Cancelar (filas 3-4); un ítem destructivo para desy-angular; una línea `Choque con MWG` propia para `aria-invalid`/`aria-errormessage` (C3), que hoy solo se describe dentro del patrón de errores.
+  - `layout-patterns`: la notificación escrita a mano; el skip-link (filas 23-26).
+  - `validate-accessibility`: el borde de error del checklist (`alert-dark` frente a `border-alert-base ring-2` de la macro).
+  - `scaffold-project`: «peer dependencies de Angular 19».
+  - `angular-translator`: el `routerLink`, `*appCustomInnerContent`, `isSelect` y avisar de que `<desy-button>` es `submit` por defecto.
+  - `component-recognizer`: `linter.py` desalineado con el SKILL.md.
 - **Las fases citan texto, no números de línea**, y cada criterio de grep trae su salida en rojo contra la base.
 - **Los prompts de verificación se lanzan con `claude -p`** en un directorio aislado (sesión nueva de verdad), no en subagentes, y con los insumos por ruta.
 - **Borrar la rama de fase tras el merge** (`git branch -d fase-N-…`) como último paso de cada fase.
