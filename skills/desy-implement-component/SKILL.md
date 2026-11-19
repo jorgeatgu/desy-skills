@@ -458,7 +458,7 @@ Aplica a cada componente que generes:
 - [ ] Submit nunca deshabilitado para bloquear la validación (no ligues `disabled` a la invalidez del formulario): deja enviar y muestra los errores. Contra el doble envío, `preventDoubleClick` (MWG `forms`)
 - [ ] Etiqueta clara (verbo en infinitivo, 1-2 palabras, no mayúsculas)
 - [ ] Si lleva icono + texto: `aria-hidden=true` en SVG, texto describe la acción
-- [ ] Si lleva solo icono: `role=img` + `aria-label` que describe la acción
+- [ ] Si lleva solo icono: `aria-label` en el `<button>` que describe la acción, y el SVG con `aria-hidden="true"` (el nombre lo lleva el botón, no el icono)
 - [ ] Si abre en ventana nueva (`target="_blank"`): avísalo dentro del enlace, con texto visible o con `<span class="sr-only">(se abre en ventana nueva)</span>`. No uses el atributo `title` para avisar: solo se ve al pasar el ratón y no llega por teclado (MWG `accessibility`)
 
 ### Inputs / Formularios
@@ -495,11 +495,11 @@ Aplica a cada componente que generes:
 
 ### Imágenes
 - [ ] `alt` descriptivo (o `alt=""` si decorativa)
-- [ ] Si SVG personalizado: `role=img` + `aria-label`
+- [ ] Si es un SVG informativo suelto (no dentro de un botón ni de un enlace): `role="img"` + `aria-label`
 
 ### Iconos
 - [ ] Si acompañan texto: `aria-hidden=true` (el texto ya describe la acción)
-- [ ] Si van solos: `role=img` + `aria-label` que describa la acción, no el icono
+- [ ] Si van solos dentro de un botón o enlace: `aria-hidden="true"` en el SVG y `aria-label` en el botón o enlace, que describa la acción, no el icono
 
 ### Contraste
 - [ ] Texto sobre fondo blanco: usar colores `neutral-base` o más oscuros
