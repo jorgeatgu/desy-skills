@@ -66,13 +66,13 @@ for id in $(grep -oE '<(input|select|textarea)[^>]* id="[^"]+"' "$P" | grep -v '
 # 5. Skip-link → ≥ 1
 grep -c 'c-skip-link' "$P"
 # 6. <html> con lang → no imprime nada
-grep -q '<html[^>]* lang="[^"]\{1,\}"' "$P" || echo "falta lang en <html>"
-# 7. <title> no vacío → 1
-grep -c '<title>[^<]\{1,\}</title>' "$P"
-# 8. <meta name="viewport"> → 1
-grep -c '<meta name="viewport"' "$P"
-# 9. Ningún submit deshabilitado → 0
-tr '\n' ' ' < "$P" | grep -oE '<(button|input)[^>]*type="submit"[^>]*>' | grep -c 'disabled'
+perl -0777 -ne 'print "falta lang en <html>\n" unless /<html\b[^>]*\slang=["\x27]?[a-z]/i' "$P"
+# 7. <title> no vacío → no imprime nada
+perl -0777 -ne 'print "falta <title> o está vacío\n" unless /<title>\s*[^<\s][^<]*<\/title>/i' "$P"
+# 8. <meta name="viewport"> → no imprime nada
+perl -0777 -ne 'print "falta <meta name=\"viewport\">\n" unless /<meta\b[^>]*\sname=["\x27]?viewport/i' "$P"
+# 9. Ningún submit deshabilitado (también <button> sin type, que envía) → no imprime nada
+perl -0777 -ne 'while (/<form\b.*?<\/form>/gs) { for (my @b = $& =~ /<(?:button|input)\b[^>]*>/g) { s/\s+/ /g; print "submit deshabilitado: $_\n" if / disabled(?:[ =>\/]|$)/ && (/^<button/ && !/ type="(?:button|reset)"/ || / type="submit"/) } }' "$P"
 # 10. Cada <button> dentro de un <form> con type explícito → no imprime nada
 perl -0777 -ne 'while (/<form\b.*?<\/form>/gs) { for (my @b = $& =~ /<button\b[^>]*>/g) { s/\s+/ /g; print "sin type: $_\n" unless / type="/ } }' "$P"
 ```
@@ -154,7 +154,7 @@ Manual, ~15 minutos. Activa NVDA / VoiceOver / Orca y recorre la página:
 | Lectura de un botón con icono + texto | Lee SOLO el texto (icono es `aria-hidden=true`) |
 | Lectura de un botón solo con icono | Lee el `aria-label` (ej: "Eliminar, botón") |
 | Lectura de un input | Lee el label + el tipo (ej: "Nombre, edición, requerido") |
-| Lectura de un input con error | "Nombre, edición, requerido, error: el campo es obligatorio" |
+| Lectura de un input con error | "Nombre, no válido, edición, requerido, error: el campo es obligatorio" |
 | Lectura de un formulario completo | "Formulario de contacto" (por `aria-label` o `aria-labelledby`) |
 | Lectura de una tabla | "Tabla, 3 filas, 4 columnas. Encabezado: Mes, Pago 1, Pago 2" |
 | Lectura de un modal al abrirse | Anuncia el diálogo con su título (por `aria-labelledby`), p. ej. "¿Eliminar expediente?, diálogo"; en la variante destructiva, el foco cae en "Cancelar, botón" |
@@ -249,7 +249,7 @@ Tras todos los tests, compila un reporte de accesibilidad:
 
 ## Contraste y color
 - [x] Texto principal: 4.5:1+
-- [x] Texto sobre base: 16px+ semibold
+- [x] Texto sobre base: 16px+ semibold y 4.5:1+
 - [x] Borders inputs: 3:1+
 - [ ] X falla: [detalle]
 
@@ -295,7 +295,7 @@ Tras todos los tests, compila un reporte de accesibilidad:
 - [ ] Si lleva icono + texto: `aria-hidden=true` en SVG
 - [ ] Si lleva solo icono: `aria-label` en el `<button>` que describe la acción, y el SVG con `aria-hidden="true"` (el nombre lo lleva el botón, no el icono)
 - [ ] Si abre en ventana nueva (`target="_blank"`): el aviso va dentro del enlace, con texto visible o con `<span class="sr-only">(se abre en ventana nueva)</span>`. No uses el atributo `title` para avisar: solo se ve al pasar el ratón y no llega por teclado (MWG `accessibility`)
-- [ ] Disabled: `aria-disabled` automático, NO botón invisible
+- [ ] Disabled: `aria-disabled` automático, NO botón invisible. El submit de un formulario no se deshabilita: se valida al enviar
 - [ ] Estados: default / loading / success / error
 - [ ] Contraste: border primary-base 1px sobre fondo blanco
 
