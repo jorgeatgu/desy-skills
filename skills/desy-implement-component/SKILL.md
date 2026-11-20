@@ -490,7 +490,7 @@ Aplica a cada componente que generes:
 - [ ] Variante destructiva: botón principal a la derecha, color `alert`
 - [ ] Variante destructiva: foco inicial en Cancelar (la acción segura), en lugar del encabezado. Dale un `id` al botón Cancelar y pásalo como tercer argumento (`focusFirst`) de `openDialog`. En desy-html, en el botón que abre el modal: `"onclick": "openDialog('modal-eliminar', this, 'boton-cancelar-eliminar')"`.
 
-> Choque con MWG `dialog`: MWG recomienda `<dialog>` nativo sin `role`/`aria-modal`. Los componentes `modal` y `dialog` de DESY son `<div>` gestionados por `dialog.js`, que exige `role="dialog"`; por eso aquí sí se pide. Propuesta SDA: `docs/propuestas-sda.md` §1.
+> Choque con MWG `dialog`: MWG recomienda `<dialog>` nativo sin `role`/`aria-modal`. Los componentes `modal` y `dialog` de DESY son `<div>` gestionados por `dialog.js`, que exige `role="dialog"`; por eso aquí sí se pide. Mejora pendiente en la librería: migrar a `<dialog>` nativo.
 
 ### Imágenes
 - [ ] `alt` descriptivo (o `alt=""` si decorativa)
